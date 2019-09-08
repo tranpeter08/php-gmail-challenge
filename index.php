@@ -70,15 +70,20 @@ $user = 'me';
 $options = ['maxResults' => '10'];
 $messages = $service->users_messages->listUsersMessages($user, $options)->getMessages();
 
-print "First 10 email subject lines:\n";
-foreach($messages as $message) {
-  $params = ['format' => 'metadata', 'metadataHeaders'=>['Subject']];
-  $msgId = $message->id;
+if (!count($messages)) {
+  print "No emails found";
+} else {
+  print "First 10 email subject lines:\n";
+  foreach($messages as $index=>$message) {
+    $count = $index + 1;
+    $params = ['format' => 'metadata', 'metadataHeaders'=>['Subject']];
+    $msgId = $message->id;
 
-  $result = $service->users_messages->get($user, $msgId, $params);
-  $headers = $result->getPayload()->headers;
+    $result = $service->users_messages->get($user, $msgId, $params);
+    $headers = $result->getPayload()->headers;
 
-  $subject = $headers[0]['value'];
+    $subject = $headers[0]['value'];
 
-  print "- $subject\n";
+    print "$count) $subject\n";
+  }
 }
