@@ -73,11 +73,12 @@ $messages = $service->users_messages->listUsersMessages($user, $options)->getMes
 print "First 10 email subject lines:\n";
 foreach($messages as $message) {
   $params = ['format' => 'metadata', 'metadataHeaders'=>['Subject']];
-  
   $msgId = $message->id;
+
   $result = $service->users_messages->get($user, $msgId, $params);
   $headers = $result->getPayload()->headers;
 
   $subject = $headers[0]['value'];
+
   print "- $subject\n";
 }
